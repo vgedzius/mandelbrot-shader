@@ -23,6 +23,10 @@ module.exports = {
       template: "./public/index.html",
     }),
   ],
+  resolve: {
+    extensions: [".js", "jsx", ".ts", ".tsx"],
+    preferRelative: true,
+  },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
