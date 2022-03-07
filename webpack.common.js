@@ -24,7 +24,7 @@ module.exports = {
       template: "./public/index.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "public/static" }],
+      patterns: ["public/static"],
     }),
   ],
   resolve: {

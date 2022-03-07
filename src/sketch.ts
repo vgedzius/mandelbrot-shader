@@ -1,20 +1,22 @@
 import p5, { Shader } from "p5";
 
-let theShader: Shader;
+let shader: Shader;
 
 function sketch(p: p5) {
   p.preload = () => {
-    theShader = p.loadShader("shaders/basic.vert", "shaders/basic.frag");
+    shader = p.loadShader("shaders/basic.vert.glsl", "shaders/basic.frag.glsl");
   };
 
   p.setup = () => {
-    p.createCanvas(700, 410, p.WEBGL);
-    p.shader(theShader);
+    p.createCanvas(500, 500, p.WEBGL);
+    p.shader(shader);
   };
 
   p.draw = () => {
-    theShader.setUniform("u_resolution", [p.width, p.height]);
-    p.shader(theShader);
+    shader.setUniform("u_resolution", [p.width, p.height]);
+
+    p.shader(shader);
+    //p.quad(-1, -1, 1, -1, 1, 1, -1, 1);
     p.rect(0, 0, p.width, p.height);
   };
 }
