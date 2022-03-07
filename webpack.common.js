@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -22,9 +23,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new CopyPlugin({
+      patterns: [{ from: "public/static" }],
+    }),
   ],
   resolve: {
-    extensions: [".js", "jsx", ".ts", ".tsx"],
+    extensions: [".ts", ".tsx", "..."],
     preferRelative: true,
   },
   output: {

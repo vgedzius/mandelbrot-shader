@@ -1,17 +1,21 @@
-import p5 from "p5";
+import p5, { Shader } from "p5";
+
+let theShader: Shader;
 
 function sketch(p: p5) {
-  let x = 100;
-  let y = 100;
-
-  p.setup = function () {
-    p.createCanvas(700, 410);
+  p.preload = () => {
+    theShader = p.loadShader("shaders/basic.vert", "shaders/basic.frag");
   };
 
-  p.draw = function () {
-    p.background(0);
-    p.fill(255);
-    p.rect(x, y, 50, 50);
+  p.setup = () => {
+    p.createCanvas(700, 410, p.WEBGL);
+    p.shader(theShader);
+  };
+
+  p.draw = () => {
+    theShader.setUniform("u_resolution", [p.width, p.height]);
+    p.shader(theShader);
+    p.rect(0, 0, p.width, p.height);
   };
 }
 
