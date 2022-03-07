@@ -1,6 +1,6 @@
 import p5 from "p5";
 
-let sketch = function (p) {
+let sketch = function (p: p5) {
   let x = 100;
   let y = 100;
 
@@ -15,4 +15,4 @@ let sketch = function (p) {
   };
 };
 
-let myp5 = new p5(sketch);
+new p5(sketch, document.getElementById("canvas"));
