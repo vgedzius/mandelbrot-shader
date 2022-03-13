@@ -1,6 +1,4 @@
-#ifdef GL_ES
 precision highp float;
-#endif
 
 varying vec2 vPos;
 attribute vec3 aPosition;

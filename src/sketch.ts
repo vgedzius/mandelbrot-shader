@@ -1,19 +1,24 @@
 import p5, { Shader } from "p5";
+import "styles/main.css";
 
 const offsetStep = 0.005;
 const zoomStep = 1.5;
 
+const defaultWidth = 600;
+const defaultHeight = 400;
+
 function sketch(p: p5) {
   let shader: Shader;
   let zoom = 1.5;
+  let fs = false;
 
   let position = [-0.5, 0];
   let lastPosition = p.createVector(0, 0, 0);
   let dragging = false;
-  let dragX = 0.0;
-  let dragY = 0.0;
-  let dragOffsetX = 0.0;
-  let dragOffsetY = 0.0;
+  let dragX = 0;
+  let dragY = 0;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
 
   p.preload = () => {
     shader = p.loadShader(
@@ -23,7 +28,7 @@ function sketch(p: p5) {
   };
 
   p.setup = () => {
-    p.createCanvas(600, 400, p.WEBGL);
+    p.createCanvas(defaultWidth, defaultHeight, p.WEBGL);
     p.shader(shader);
   };
 
@@ -76,6 +81,21 @@ function sketch(p: p5) {
     }
 
     return false;
+  };
+
+  p.keyReleased = () => {
+    if (p.key === "f") {
+      fs = p.fullscreen();
+      p.fullscreen(!fs);
+    }
+  };
+
+  p.windowResized = () => {
+    if (!fs) {
+      p.resizeCanvas(p.windowWidth, p.windowHeight);
+    } else {
+      p.resizeCanvas(defaultWidth, defaultHeight);
+    }
   };
 }
 
