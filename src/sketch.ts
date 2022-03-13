@@ -7,7 +7,7 @@ function sketch(p: p5) {
   let shader: Shader;
   let zoom = 1.5;
 
-  let position = [-0.7, 0];
+  let position = [-0.5, 0];
   let lastPosition = p.createVector(0, 0, 0);
   let dragging = false;
   let dragX = 0.0;
@@ -23,13 +23,14 @@ function sketch(p: p5) {
   };
 
   p.setup = () => {
-    p.createCanvas(500, 500, p.WEBGL);
+    p.createCanvas(600, 400, p.WEBGL);
     p.shader(shader);
   };
 
   p.draw = () => {
     shader.setUniform("zoom", zoom);
     shader.setUniform("position", position);
+    shader.setUniform("aspect", p.width / p.height);
 
     p.shader(shader);
     p.rect(0, 0, p.width, p.height);

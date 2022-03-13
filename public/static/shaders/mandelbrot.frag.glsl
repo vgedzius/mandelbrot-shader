@@ -5,10 +5,14 @@ precision highp float;
 varying vec2 vPos;
 uniform vec2 position;
 uniform float zoom;
+uniform float aspect;
 const int I = 500;
 
 void main() {
-  vec2 c = position + vPos * zoom, z = c;
+  vec2 c = position + vPos * zoom;
+  c.x = c.x * aspect;
+  vec2 z = c;
+
   float n = 0.0;
 
   for(int i = I; i > 0; i--) {
