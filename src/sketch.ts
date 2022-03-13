@@ -1,4 +1,4 @@
-import p5, { Shader, Vector } from "p5";
+import p5, { Shader } from "p5";
 
 const offsetStep = 0.005;
 const zoomStep = 1.5;
@@ -6,15 +6,14 @@ const zoomStep = 1.5;
 function sketch(p: p5) {
   let shader: Shader;
   let zoom = 1.5;
-  let offset = [-0.7, 0];
+
+  let position = [-0.7, 0];
   let lastPosition = p.createVector(0, 0, 0);
-  let dragLocked = false;
-
-  let bx = 0.0;
-  let by = 0.0;
-
-  let xOffset = 0.0;
-  let yOffset = 0.0;
+  let dragging = false;
+  let dragX = 0.0;
+  let dragY = 0.0;
+  let dragOffsetX = 0.0;
+  let dragOffsetY = 0.0;
 
   p.preload = () => {
     shader = p.loadShader(
@@ -30,7 +29,7 @@ function sketch(p: p5) {
 
   p.draw = () => {
     shader.setUniform("r", zoom);
-    shader.setUniform("p", offset);
+    shader.setUniform("p", position);
 
     p.shader(shader);
     p.rect(0, 0, p.width, p.height);
@@ -49,30 +48,30 @@ function sketch(p: p5) {
   };
 
   p.mousePressed = (event: MouseEvent) => {
-    dragLocked = true;
+    dragging = true;
 
-    xOffset = event.x - bx;
-    yOffset = event.y - by;
+    dragOffsetX = event.x - dragX;
+    dragOffsetY = event.y - dragY;
   };
 
   p.mouseReleased = (event: MouseEvent) => {
-    dragLocked = false;
+    dragging = false;
   };
 
   p.mouseDragged = (event: DragEvent) => {
-    if (dragLocked) {
-      bx = event.x - xOffset;
-      by = event.y - yOffset;
+    if (dragging) {
+      dragX = event.x - dragOffsetX;
+      dragY = event.y - dragOffsetY;
 
-      const position = p.createVector(bx, by, 0);
-      const delta = lastPosition.sub(position);
+      const newPosition = p.createVector(dragX, dragY, 0);
+      const delta = lastPosition.sub(newPosition);
 
-      offset = [
-        offset[0] + delta.x * offsetStep * zoom,
-        offset[1] - delta.y * offsetStep * zoom,
+      position = [
+        position[0] + delta.x * offsetStep * zoom,
+        position[1] - delta.y * offsetStep * zoom,
       ];
 
-      lastPosition = position;
+      lastPosition = newPosition;
     }
 
     return false;
