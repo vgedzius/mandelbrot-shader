@@ -28,8 +28,8 @@ function sketch(p: p5) {
   };
 
   p.draw = () => {
-    shader.setUniform("r", zoom);
-    shader.setUniform("p", position);
+    shader.setUniform("zoom", zoom);
+    shader.setUniform("position", position);
 
     p.shader(shader);
     p.rect(0, 0, p.width, p.height);

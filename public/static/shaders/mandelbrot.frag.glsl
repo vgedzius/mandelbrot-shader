@@ -3,12 +3,12 @@ precision highp float;
 #endif
 
 varying vec2 vPos;
-uniform vec2 p;
-uniform float r;
+uniform vec2 position;
+uniform float zoom;
 const int I = 500;
 
 void main() {
-  vec2 c = p + vPos * r, z = c;
+  vec2 c = position + vPos * zoom, z = c;
   float n = 0.0;
 
   for(int i = I; i > 0; i--) {
