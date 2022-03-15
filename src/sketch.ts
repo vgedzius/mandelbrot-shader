@@ -37,6 +37,10 @@ function sketch(p: p5) {
     shader.setUniform("position", position);
     shader.setUniform("aspect", p.width / p.height);
 
+    var w = p.width;
+    var h = p.height;
+    shader.setUniform("pixelSize", [1.0 / w, 1.0 / h]);
+
     p.shader(shader);
     p.rect(0, 0, p.width, p.height);
   };
