@@ -12,7 +12,7 @@ function sketch(p: p5) {
   let zoom = 1.5;
   let fs = false;
 
-  let position = [-0.5, 0];
+  let center = [-0.5, 0];
   let lastPosition = p.createVector(0, 0, 0);
   let dragging = false;
   let dragX = 0;
@@ -34,7 +34,7 @@ function sketch(p: p5) {
 
   p.draw = () => {
     shader.setUniform("zoom", zoom);
-    shader.setUniform("position", position);
+    shader.setUniform("center", center);
     shader.setUniform("aspect", p.width / p.height);
 
     var w = p.width;
@@ -42,7 +42,7 @@ function sketch(p: p5) {
     shader.setUniform("pixelSize", [1.0 / w, 1.0 / h]);
 
     p.shader(shader);
-    p.rect(0, 0, p.width, p.height);
+    p.quad(-1, -1, 1, -1, 1, 1, -1, 1);
   };
 
   p.mouseWheel = (event: WheelEvent) => {
@@ -76,9 +76,9 @@ function sketch(p: p5) {
       const newPosition = p.createVector(dragX, dragY, 0);
       const delta = lastPosition.sub(newPosition);
 
-      position = [
-        position[0] + delta.x * offsetStep * zoom,
-        position[1] - delta.y * offsetStep * zoom,
+      center = [
+        center[0] + delta.x * offsetStep * zoom,
+        center[1] - delta.y * offsetStep * zoom,
       ];
 
       lastPosition = newPosition;

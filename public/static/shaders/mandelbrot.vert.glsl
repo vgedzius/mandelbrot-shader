@@ -1,11 +1,10 @@
 precision highp float;
 
-varying vec2 vPos;
 attribute vec3 aPosition;
+varying vec2 coord;
 
-void main() {
-  vec4 positionVec4 = vec4(aPosition, 1.0);
-  positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
+void main(void) {
+  coord = aPosition.xy;
 
-  vPos = (gl_Position = positionVec4).xy;
+  gl_Position = vec4(aPosition, 1.0);
 }

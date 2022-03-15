@@ -1,8 +1,8 @@
 precision highp float;
 
-varying vec2 vPos;
+varying vec2 coord;
 
-uniform vec2 position;
+uniform vec2 center;
 uniform float zoom;
 uniform float aspect;
 uniform vec2 pixelSize;
@@ -20,7 +20,7 @@ vec2 complexMul(vec2 a, vec2 b) {
 }
 
 vec3 colorSinglePrecision(vec2 p) {
-  vec2 c = p + vPos * zoom;
+  vec2 c = p * zoom + center;
   c.x = c.x * aspect;
   vec2 z = vec2(0.0, 0.0);
 
@@ -53,7 +53,7 @@ void main() {
 
   for(int x = 0; x < AntiAlias; x++) {
     for(int y = 0; y < AntiAlias; y++) {
-      v += colorSinglePrecision(position + vec2(x, y) * ard);
+      v += colorSinglePrecision(coord + vec2(x, y) * ard);
     }
   }
   gl_FragColor = vec4(pow(v / float(AntiAlias * AntiAlias), vec3(1. / 2.2)), 1.0);
