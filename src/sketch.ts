@@ -8,7 +8,7 @@ const defaultHeight = 400;
 
 function sketch(p: p5) {
   let shader: Shader;
-  let zoom = 1;
+  let zoom = 1.5;
   let fs = false;
 
   let center = [-0.5, 0];
@@ -25,7 +25,7 @@ function sketch(p: p5) {
   const centerInput = p.select("#center");
 
   maxIterationsInput.value(maxIterations);
-  zoomInput.value(zoom);
+  zoomInput.value(1 / zoom);
   centerInput.value(`${center[0]}, ${center[1]}`);
 
   p.preload = () => {
@@ -61,6 +61,7 @@ function sketch(p: p5) {
     }
 
     zoom = p.constrain(zoom, 0, 1.5);
+    zoomInput.value(1 / zoom);
 
     return false;
   };
