@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/vgedzius/mandelbrot-shader#readme",
   "dependencies": {
+    "milligram": "^1.4.1",
+    "normalize.css": "^8.0.1",
     "p5": "^1.4.1"
   },
   "devDependencies": {

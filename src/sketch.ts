@@ -1,15 +1,14 @@
-import p5, { Shader } from "p5";
-import "styles/main.css";
+import p5, { Shader, Element } from "p5";
 
 const offsetStep = 0.005;
-const zoomStep = 1.5;
+const zoomStep = 1.1;
 
 const defaultWidth = 600;
 const defaultHeight = 400;
 
 function sketch(p: p5) {
   let shader: Shader;
-  let zoom = 1.5;
+  let zoom = 1;
   let fs = false;
 
   let center = [-0.5, 0];
@@ -19,6 +18,15 @@ function sketch(p: p5) {
   let dragY = 0;
   let dragOffsetX = 0;
   let dragOffsetY = 0;
+  let maxIterations = 500;
+
+  const maxIterationsInput = p.select("#maxIterations");
+  const zoomInput = p.select("#zoom");
+  const centerInput = p.select("#center");
+
+  maxIterationsInput.value(maxIterations);
+  zoomInput.value(zoom);
+  centerInput.value(`${center[0]}, ${center[1]}`);
 
   p.preload = () => {
     shader = p.loadShader(
@@ -33,13 +41,13 @@ function sketch(p: p5) {
   };
 
   p.draw = () => {
+    const { width, height } = p;
+
+    shader.setUniform("maxIterations", maxIterations);
     shader.setUniform("zoom", zoom);
     shader.setUniform("center", center);
-    shader.setUniform("aspect", p.width / p.height);
-
-    var w = p.width;
-    var h = p.height;
-    shader.setUniform("pixelSize", [1.0 / w, 1.0 / h]);
+    shader.setUniform("aspect", width / height);
+    shader.setUniform("pixelSize", [1.0 / width, 1.0 / height]);
 
     p.shader(shader);
     p.quad(-1, -1, 1, -1, 1, 1, -1, 1);
@@ -57,21 +65,27 @@ function sketch(p: p5) {
     return false;
   };
 
-  p.mousePressed = (event: MouseEvent) => {
+  p.mousePressed = () => {
+    const { mouseX, mouseY } = p;
+
+    if (mouseX < 0 || mouseX > p.width || mouseY < 0 || mouseY > p.height) {
+      return;
+    }
+
     dragging = true;
 
-    dragOffsetX = event.x - dragX;
-    dragOffsetY = event.y - dragY;
+    dragOffsetX = mouseX - dragX;
+    dragOffsetY = mouseY - dragY;
   };
 
-  p.mouseReleased = (event: MouseEvent) => {
+  p.mouseReleased = () => {
     dragging = false;
   };
 
-  p.mouseDragged = (event: DragEvent) => {
+  p.mouseDragged = () => {
     if (dragging) {
-      dragX = event.x - dragOffsetX;
-      dragY = event.y - dragOffsetY;
+      dragX = p.mouseX - dragOffsetX;
+      dragY = p.mouseY - dragOffsetY;
 
       const newPosition = p.createVector(dragX, dragY, 0);
       const delta = lastPosition.sub(newPosition);
@@ -80,6 +94,8 @@ function sketch(p: p5) {
         center[0] + delta.x * offsetStep * zoom,
         center[1] - delta.y * offsetStep * zoom,
       ];
+
+      centerInput.value(`${center[0]}, ${center[1]}`);
 
       lastPosition = newPosition;
     }

@@ -7,7 +7,7 @@ uniform float zoom;
 uniform float aspect;
 uniform vec2 pixelSize;
 
-const int I = 500;
+const int maxIterations = 500;
 const int AntiAlias = 1;
 
 	// Color parameters
@@ -24,8 +24,8 @@ vec3 colorSinglePrecision(vec2 p) {
   c.x = c.x * aspect;
   vec2 z = vec2(0.0, 0.0);
 
-  int j = I;
-  for(int i = 0; i <= I; i++) {
+  int j = maxIterations;
+  for(int i = 0; i <= maxIterations; i++) {
     if(length(z) > 1000.0) {
       break;
     }
@@ -34,7 +34,7 @@ vec3 colorSinglePrecision(vec2 p) {
   }
   float dotZZ = dot(z, z);
 
-  if(j < I) {
+  if(j < maxIterations) {
 			// The color scheme here is based on one
 			// from the Mandelbrot in Inigo Quilez's Shader Toy:
     float co = float(j) + 1.0 - log2(.5 * log2(dotZZ));
